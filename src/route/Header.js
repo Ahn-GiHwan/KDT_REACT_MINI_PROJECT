@@ -18,7 +18,7 @@ class Header extends Component {
             </Link>
           </NavbarBrand>
           {/* <NavbarToggler /> */}
-          <Nav className="mr-auto" className="menu">
+          <Nav className="mr-auto menu">
             <NavItem>
               <NavLink to={"/board"}>게시판</NavLink>
             </NavItem>
