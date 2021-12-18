@@ -1,0 +1,47 @@
+/* common */
+*,
+input {
+  font-family: "Jua", sans-serif;
+}
+
+body {
+  box-sizing: border-box;
+}
+
+/* header */
+.nav-item a:hover {
+  color: #f03959;
+  transform: scale(1.1);
+  transition: 0.1s ease-in-out;
+}
+
+.active {
+  color: #f03959;
+  transform: scale(1.1);
+}
+
+header {
+  border-bottom: 1px solid rgb(226, 223, 223);
+  margin-bottom: 10px;
+}
+
+/* naver */
+
+.suggestionList {
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+.suggestionQuery:hover {
+  background-color: rgb(247, 241, 241);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+/* board */
+
+.boardTable {
+  cursor: pointer;
+}
