@@ -1,23 +1,23 @@
 import axios from "axios";
 
-export const fetchBuyCart = async (cartInfo) => {
+export const fetchBuyCart = async (cartInfo, user_id, cart_id) => {
   const { data } = await axios.post("api/cart?type=order", {
     ...cartInfo,
     receive_address3: "",
-    cart_id: "20211218CART000042",
-    user_id: "agh@test.com",
     complete_yn: "Y",
+    user_id,
+    cart_id,
   });
 
   return data;
 };
 
-export const fetchCompleteBuy = async (product_id) => {
+export const fetchCompleteBuy = async (product_id, user_id, cart_id) => {
   const { data } = await axios.post("api/cart?type=modify", {
-    cart_id: "20211218CART000042",
     complete_yn: "Y",
     product_id,
-    user_id: "agh@test.com",
+    user_id,
+    cart_id,
   });
 
   return data;
@@ -25,7 +25,7 @@ export const fetchCompleteBuy = async (product_id) => {
 
 export const fetchGetBuyList = async (user_id) => {
   const { data } = await axios.post("api/order?type=page", {
-    user_id: "agh@test.com",
+    user_id,
     param_length: 200,
     param_start: 0,
   });
@@ -42,9 +42,9 @@ export const fetchGetBuyDetail = async (order_id) => {
   return data;
 };
 
-export const fetchGetBuyCategoryList = async () => {
+export const fetchGetBuyCategoryList = async (user_id) => {
   const { data } = await axios.post("api/order?type=userStat", {
-    user_id: "agh@test.com",
+    user_id,
   });
 
   return data;

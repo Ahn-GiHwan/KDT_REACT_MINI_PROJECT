@@ -1,21 +1,22 @@
 import axios from "axios";
 
-export const getProductCount = async () => {
+export const getProductCount = async (user_id) => {
   const { data } = await axios.post("api/product?type=page", {
-    user_id: "agh@test.com",
+    user_id,
   });
 
   return data;
 };
 
 export const getProductList = async (
+  user_id,
   category1,
   category2,
   category3,
   category4
 ) => {
   const { data } = await axios.post("api/product?type=list", {
-    user_id: "agh@test.com",
+    user_id,
     title: null,
     category1: category1 && category1,
     category2: category2 ? category2 : undefined,
