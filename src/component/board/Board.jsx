@@ -5,13 +5,17 @@ import { BoardTitle, Container, Main } from "../../css/style";
 import { fetchGetBoardList, fetchUpViewCount } from "../../utils/boardFetch";
 import Swal from "sweetalert2";
 import Loading from "../common/Loading";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Board = () => {
   const ref = useRef(null);
   const [data, setData] = useState([]);
   const [boardList, setBoardList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  const history = useHistory();
+  const { userInfo } = useSelector((state) => state.user);
 
   const getBoradList = useCallback(async () => {
     try {
@@ -43,6 +47,11 @@ const Board = () => {
     Swal.fire({ title, text: content });
   };
 
+  const goCreateBoard = () => {
+    if (userInfo?.user_email) history.push("/board/create");
+    else Swal.fire({ title: "로그인 후 가능합니다.", icon: "error" });
+  };
+
   useEffect(() => {
     getBoradList();
   }, [getBoradList]);
@@ -53,9 +62,13 @@ const Board = () => {
         <div>
           <BoardTitle>
             <h2>게시판({boardList.length})</h2>
-            <Link to="/board/create" style={{ margin: 0 }}>
-              <Button color="danger">글쓰기</Button>
-            </Link>
+            <Button
+              color="danger"
+              onClick={goCreateBoard}
+              style={{ margin: 0 }}
+            >
+              글쓰기
+            </Button>
           </BoardTitle>
           <Input
             innerRef={ref}
