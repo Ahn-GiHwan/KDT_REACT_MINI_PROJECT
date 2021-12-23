@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
+import { HeaderTag } from "../css/style";
 
 class Header extends Component {
   render() {
     return (
-      <header>
+      <HeaderTag>
         <Navbar>
           <NavbarBrand>
             <Link to={"/"}>
@@ -39,7 +40,7 @@ class Header extends Component {
             </NavItem>
           </Nav>
         </Navbar>
-      </header>
+      </HeaderTag>
     );
   }
 }
