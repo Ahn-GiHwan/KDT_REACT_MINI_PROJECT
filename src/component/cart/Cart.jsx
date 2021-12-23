@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   Button,
@@ -17,10 +18,11 @@ import InfoTable from "../common/InfoTable";
 import Loading from "../common/Loading";
 
 const Cart = React.memo(() => {
-  const history = useHistory();
   const [carts, setCarts] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const { userInfo, cartId } = useSelector((state) => state.user);
+  const history = useHistory();
 
   const receiveUser = useRef(null);
   const receiveUserTel1 = useRef(null);
@@ -49,9 +51,9 @@ const Cart = React.memo(() => {
     }
   }, []);
 
-  const getTotalPrice = useCallback(async (cart_id, user_Id) => {
+  const getTotalPrice = useCallback(async (userId, cartId) => {
     try {
-      const { json } = await fetchGetTotalPrice(cart_id, user_Id);
+      const { json } = await fetchGetTotalPrice(userId, cartId);
       setTotalPrice(json[0].total_price);
     } catch ({ response }) {
       Swal.fire("통신에러", response.statusText, "error");
@@ -91,10 +93,11 @@ const Cart = React.memo(() => {
       total_price: totalPrice,
     };
     try {
-      await fetchBuyCart(cartInfo);
+      await fetchBuyCart(cartInfo, userInfo.user_email, cartId);
       const productIdList = carts.map((cart) => cart.product_id);
       productIdList.forEach(
-        async (productId) => await fetchCompleteBuy(productId)
+        async (productId) =>
+          await fetchCompleteBuy(productId, userInfo.user_email, cartId)
       );
       Swal.fire({ title: "구매 성공", icon: "success" }).then(() => {
         window.location.reload();
@@ -106,10 +109,13 @@ const Cart = React.memo(() => {
   };
 
   useEffect(() => {
-    // getCartList(user_id);
-    getCartList();
-    getTotalPrice();
-  }, [getCartList, getTotalPrice]);
+    if (!userInfo?.user_email) history.push("/login");
+  }, [history, userInfo?.user_email]);
+
+  useEffect(() => {
+    getCartList(userInfo.user_email);
+    getTotalPrice(userInfo.user_email, cartId);
+  }, [cartId, getCartList, getTotalPrice, userInfo.user_email]);
 
   return (
     <Container>

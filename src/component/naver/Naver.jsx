@@ -6,16 +6,21 @@ import InfoTable from "../common/InfoTable";
 import SuggestionList from "./SuggestionList";
 import { Container, Main } from "../../css/style";
 import { fetchInsertProduct } from "../../utils/productFerch";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 const Naver = React.memo(() => {
   const [suggestionList, setSuggestionList] = useState([]);
   const [productList, setProductList] = useState([]);
 
   const ref = useRef(null);
+  const history = useHistory();
+  const { userInfo } = useSelector((state) => state.user);
 
   useEffect(() => {
-    ref.current.focus();
-  }, []);
+    if (userInfo?.user_email) ref.current.focus();
+    else history.push("/login");
+  }, [history, userInfo?.user_email]);
 
   const closeSuggestionList = useCallback(() => {
     if (suggestionList.length > 0) setSuggestionList([]);
