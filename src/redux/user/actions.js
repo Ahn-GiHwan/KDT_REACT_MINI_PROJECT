@@ -1,6 +1,11 @@
 import { fetchLogin, fetchSessionLogin } from "../../utils/userFetch";
 import { fetchGetCartId } from "../../utils/cartFetch";
-import { GET_LOGIN_FAIL, GET_LOGIN_LOAGIND, GET_LOGIN_SUCCESS } from "./types";
+import {
+  GET_LOGIN_FAIL,
+  GET_LOGIN_LOAGIND,
+  GET_LOGIN_SUCCESS,
+  LOGOUT,
+} from "./types";
 import axios from "axios";
 import cookie from "react-cookies";
 import Swal from "sweetalert2";
@@ -70,3 +75,7 @@ export const onSessionLogin =
       Swal.fire("로그인 실패", "error");
     }
   };
+
+export const logout = () => {
+  return { type: LOGOUT };
+};
