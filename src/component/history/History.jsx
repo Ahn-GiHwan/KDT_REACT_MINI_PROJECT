@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Container, Main } from "../../css/style";
 import { fetchGetBuyCategoryList, fetchGetBuyList } from "../../utils/buyFetch";
 import InfoTable from "../common/InfoTable";
@@ -11,6 +12,7 @@ import Chart from "./Chart";
 const History = () => {
   const [chartData, setChartData] = useState([]);
   const { userInfo } = useSelector((state) => state.user);
+  const history = useHistory();
 
   const getBuyList = useCallback(async () => {
     try {
@@ -29,10 +31,14 @@ const History = () => {
       console.dir(error);
     }
   }, [userInfo.user_email]);
+
   useEffect(() => {
-    getBuyList();
-    getCategoryInfo();
-  }, [getBuyList, getCategoryInfo]);
+    if (!userInfo?.user_email) history.push("/login");
+    else {
+      getBuyList();
+      getCategoryInfo();
+    }
+  }, [getBuyList, getCategoryInfo, history, userInfo?.user_email]);
 
   return (
     <Container>
