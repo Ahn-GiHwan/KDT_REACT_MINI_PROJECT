@@ -10,9 +10,6 @@ export const fetchLogin = async (user_email, user_password) => {
 };
 
 export const fetchSessionLogin = async (user_email, user_password) => {
-  console.log("fetchSessionLogin");
-  console.log(user_email);
-  console.log(user_password);
   const { data } = await axios.post("api/user?type=sessionSignin", {
     user_email,
     user_password,
