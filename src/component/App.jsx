@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, useLocation } from "react-router-dom";
 import Header from "../route/Header";
 import Footer from "../route/Footer";
 import "bootstrap/dist/css/bootstrap.css";
@@ -14,14 +14,11 @@ import Cart from "./cart/Cart";
 import History from "./history/History";
 import Naver from "./naver/Naver";
 import ScrollToTop from "./common/ScrollToTop";
-import { useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import cookie from "react-cookies";
 import { fetchSessionCheck } from "../utils/userFetch";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { onSessionLogin } from "../redux/user/actions";
-import { useCallback } from "react";
-import { useSelector } from "react-redux";
 
 function App() {
   const location = useLocation();
@@ -40,8 +37,9 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (userInfo === []) {
-      if ("/register" !== location.pathname) fncCheckSession();
+    if (!userInfo?.user_email) {
+      if ("/register" !== location.pathname || "/" === location.pathname)
+        fncCheckSession();
     }
   }, [fncCheckSession, location.pathname, userInfo]);
 
