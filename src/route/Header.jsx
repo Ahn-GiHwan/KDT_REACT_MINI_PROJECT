@@ -3,7 +3,7 @@ import cookie from "react-cookies";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import { Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
+import { Button, Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
 import { HeaderTag } from "../css/style";
 import { logout } from "../redux/user/actions";
 
@@ -45,13 +45,13 @@ const Header = () => {
               <NavLink to={"/register"}>사용자 등록</NavLink>
             </NavItem>
           )}
-          <NavItem>
-            <NavLink to={"/product"}>구매 하기</NavLink>
-          </NavItem>
           {userInfo?.user_email && (
             <>
               <NavItem>
                 <NavLink to={"/naverApi"}>상품 등록</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink to={"/product"}>구매 하기</NavLink>
               </NavItem>
               <NavItem>
                 <NavLink to={"/cart"}>장바구니</NavLink>
@@ -60,7 +60,9 @@ const Header = () => {
                 <NavLink to={"/history"}>구매 내역</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={onLogout}>로그아웃</NavLink>
+                <Button onClick={onLogout} size="sm" color="danger" outline>
+                  로그아웃
+                </Button>
               </NavItem>
             </>
           )}
