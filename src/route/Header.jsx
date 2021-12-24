@@ -1,17 +1,21 @@
 import React from "react";
 import cookie from "react-cookies";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { Nav, Navbar, NavbarBrand, NavItem } from "reactstrap";
 import { HeaderTag } from "../css/style";
+import { logout } from "../redux/user/actions";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
-  const logout = () => {
+  const onLogout = () => {
     cookie.remove("user_password");
     cookie.remove("token_name");
     cookie.remove("token_id");
+    dispatch(logout());
   };
 
   return (
@@ -56,7 +60,7 @@ const Header = () => {
                 <NavLink to={"/history"}>구매 내역</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink onClick={logout}>로그아웃</NavLink>
+                <NavLink onClick={onLogout}>로그아웃</NavLink>
               </NavItem>
             </>
           )}
