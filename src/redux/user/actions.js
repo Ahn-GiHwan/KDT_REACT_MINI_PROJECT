@@ -14,10 +14,13 @@ export const onLogin = (user_email, user_password) => async (dispatch) => {
   dispatch({ type: GET_LOGIN_LOAGIND });
 
   try {
-    const userInfo = await fetchLogin(user_email, user_password);
-    const user_name = userInfo[0].user_name;
-    const user_pwd = userInfo[0].user_password;
-    const cartId = await fetchGetCartId(user_email);
+    const data1 = await fetchLogin(user_email, user_password);
+    const user_name = data1[0].user_name;
+    const user_pwd = data1[0].user_password;
+    const data2 = await fetchGetCartId(user_email);
+
+    const userInfo = data1[0];
+    const cartId = data2.json[0].cart_id;
     dispatch({ type: GET_LOGIN_SUCCESS, userInfo, cartId });
     const expires = new Date();
     expires.setMinutes(expires.getMinutes() + 60);
@@ -27,11 +30,6 @@ export const onLogin = (user_email, user_password) => async (dispatch) => {
         user_name,
       })
       .then((res) => {
-        console.log(res.data);
-        console.log("token_id", res.data.token_id);
-        console.log("token_name", res.data.token_name);
-        console.log("token_password", user_pwd);
-
         cookie.save("token_id", res.data.token_id, {
           path: "/",
           expires,
@@ -61,13 +59,14 @@ export const onLogin = (user_email, user_password) => async (dispatch) => {
 };
 export const onSessionLogin =
   (user_email, user_password) => async (dispatch) => {
-    console.log("onSessionLogin");
     dispatch({ type: GET_LOGIN_LOAGIND });
 
     try {
-      const userInfo = await fetchSessionLogin(user_email, user_password);
-      const cartId = await fetchGetCartId(user_email);
-      console.log(userInfo);
+      const data1 = await fetchSessionLogin(user_email, user_password);
+      const data2 = await fetchGetCartId(user_email);
+
+      const userInfo = data1.json[0];
+      const cartId = data2.json[0].cart_id;
       dispatch({ type: GET_LOGIN_SUCCESS, userInfo, cartId });
     } catch (error) {
       console.dir(error);
