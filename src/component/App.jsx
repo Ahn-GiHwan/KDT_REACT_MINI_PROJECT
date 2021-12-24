@@ -13,11 +13,37 @@ import Product from "./product/Product";
 import Cart from "./cart/Cart";
 import History from "./history/History";
 import Naver from "./naver/Naver";
-import { useState } from "react";
 import ScrollToTop from "./common/ScrollToTop";
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import cookie from "react-cookies";
+import { fetchSessionCheck } from "../utils/userFetch";
+import { useDispatch } from "react-redux";
+import { onSessionLogin } from "../redux/user/actions";
+import { useCallback } from "react";
+import { useSelector } from "react-redux";
 
 function App() {
-  const [userId, setUserId] = useState("");
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
+
+  const fncCheckSession = useCallback(async () => {
+    const tid = cookie.load("token_id");
+    const tname = cookie.load("token_name");
+    const tupwd = cookie.load("user_password");
+
+    if (tid && tname) {
+      const a = await fetchSessionCheck(tid, tname);
+      dispatch(onSessionLogin(a.decrypt_id.user_email, tupwd));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (userInfo === []) {
+      if ("/register" !== location.pathname) fncCheckSession();
+    }
+  }, [fncCheckSession, location.pathname, userInfo]);
 
   return (
     <div className="App">
@@ -29,9 +55,9 @@ function App() {
       <Route exact path="/naverApi" component={Naver} />
       <Route exact path="/board" component={Board} />
       <Route exact path="/board/create" component={CreateBoard} />
-      <Route path="/product" render={() => <Product userId={userId} />} />
-      <Route path="/cart" render={() => <Cart userId={userId} />} />
-      <Route path="/history" render={() => <History userId={userId} />} />
+      <Route path="/product" component={Product} />
+      <Route path="/cart" component={Cart} />
+      <Route path="/history" component={History} />
       <Footer />
     </div>
   );
