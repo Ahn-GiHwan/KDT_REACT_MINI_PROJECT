@@ -1,5 +1,7 @@
 import React from "react";
+import { useEffect } from "react";
 import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
   Button,
@@ -14,11 +16,18 @@ import {
 } from "reactstrap";
 import Swal from "sweetalert2";
 import { Container, Main } from "../../css/style";
+import { onLogin } from "../../redux/user/actions";
 
 const Login = () => {
   const emailRef = useRef(null);
   const pwRef = useRef(null);
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { userInfo } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (userInfo?.user_email) history.push("/product");
+  }, [history, userInfo?.user_email]);
 
   const validation = () => {
     if (!emailRef.current.value) {
@@ -33,11 +42,15 @@ const Login = () => {
     return true;
   };
 
-  const loginClick = () => {
+  const loginClick = async () => {
     if (validation()) {
       const user_email = emailRef.current.value;
       const user_password = pwRef.current.value;
-      alert(user_email + "---" + user_password);
+      try {
+        dispatch(onLogin(user_email, user_password));
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
