@@ -1,4 +1,9 @@
-import { GET_LOGIN_FAIL, GET_LOGIN_LOAGIND, GET_LOGIN_SUCCESS } from "./types";
+import {
+  GET_LOGIN_FAIL,
+  GET_LOGIN_LOAGIND,
+  GET_LOGIN_SUCCESS,
+  LOGOUT,
+} from "./types";
 
 const initState = {
   userInfo: [],
@@ -14,17 +19,24 @@ const userReducer = (state = initState, action) => {
         isLoading: true,
       };
     case GET_LOGIN_SUCCESS:
-      const userInfo = action.userInfo;
+      const userInfo = action.userInfo.json;
       const cartId = action.cartId;
       return {
         ...state,
-        userInfo: userInfo.json,
-        cartId: cartId.json,
+        userInfo: userInfo[0],
+        cartId: cartId.json[0].cart_id,
         isLoading: false,
       };
     case GET_LOGIN_FAIL:
       return {
         ...state,
+        isLoading: false,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        userInfo: [],
+        cartId: "",
         isLoading: false,
       };
 
