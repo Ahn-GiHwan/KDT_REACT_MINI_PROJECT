@@ -100,7 +100,7 @@ const Cart = React.memo(() => {
           await fetchCompleteBuy(productId, userInfo.user_email, cartId)
       );
       Swal.fire({ title: "구매 성공", icon: "success" }).then(() => {
-        window.location.reload();
+        window.location.href = "/cart";
       });
     } catch (error) {
       console.dir(error);
