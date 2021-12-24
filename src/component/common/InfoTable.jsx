@@ -77,9 +77,7 @@ const InfoTable = React.memo(({ type, bodyList, clickEvent }) => {
                     <Button
                       color="danger"
                       size="sm"
-                      onClick={() =>
-                        clickEvent[1]("cart_id", product.product_id, "user_id")
-                      }
+                      onClick={() => clickEvent[1](product.product_id)}
                     >
                       담기
                     </Button>
