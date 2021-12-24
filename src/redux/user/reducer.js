@@ -19,12 +19,12 @@ const userReducer = (state = initState, action) => {
         isLoading: true,
       };
     case GET_LOGIN_SUCCESS:
-      const userInfo = action.userInfo.json;
+      const userInfo = action.userInfo;
       const cartId = action.cartId;
       return {
         ...state,
-        userInfo: userInfo[0],
-        cartId: cartId.json[0].cart_id,
+        userInfo,
+        cartId,
         isLoading: false,
       };
     case GET_LOGIN_FAIL:
